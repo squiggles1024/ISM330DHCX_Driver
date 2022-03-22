@@ -8,6 +8,7 @@ Files of Interest:
 4. ISM330DHCX_Hardware.c: Hardware specific source file - User must implement this file for their board/project needs
 
 To Use:
+
 0. Include ISM330DHCX.h
 1. Create an ISM330DHCX_Init_Struct_t with desired user settings.
 2. Create an ISM330DHCX_IO_Drv_t with necessary low level IO functions (I2C/SPI, GPIO Communication functions).
