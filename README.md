@@ -15,3 +15,5 @@ To Use:
 3. Create a ISM330DHCX_Handle_t
 4. Pass the init struct, IO Driver, and device handle to ISM330DHCX_Init()
 5. Functions listed in ISM330DHCX.h can now be used by passing the initialized device handle as a function arguement
+
+Above example was implemented on an STM32U5 processor (b-u585i-iot02a discovery board)
