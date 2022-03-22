@@ -116,14 +116,6 @@ void ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t *Dev){
 	Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUTX_L_G, (uint8_t*)pData, 6);
 }
 
-/********************************************************************************************************
- * Brief: Reads temperature registers on ISM330DHCX and stores them in the device handle variables
- * Params: ISM330DHCX Device Handle
- ********************************************************************************************************/
-void ISM330DHCX_ReadTemperature(ISM330DHCX_Handle_t *Dev){
-	uint8_t *buff = (uint8_t*) &Dev->Temperature;
-	Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUT_TEMP_L,buff,2);
-}
 
 /********************************************************************************************************
  * Brief: Resets Device and de-intializes low level IO

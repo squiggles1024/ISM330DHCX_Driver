@@ -47,7 +47,6 @@
 
 /* USER CODE BEGIN PV */
   ISM330DHCX_Handle_t IMU;
-  static int16_t temperature_log[3000];
   static int16_t Ax_log[3000];
   static int16_t Wx_log[3000];
   static int16_t Ay_log[3000];
@@ -132,7 +131,6 @@ int main(void)
 
 			 ISM330DHCX_ReadAcceleration(&IMU);
 			 ISM330DHCX_ReadAngularVelocity(&IMU);
-			 ISM330DHCX_ReadTemperature(&IMU);
 
 			 Ax_log[samples] = IMU.Acceleration[0];
 			 Ay_log[samples] = IMU.Acceleration[1];
@@ -140,7 +138,6 @@ int main(void)
 			 Wx_log[samples] = IMU.AngularVelocity[0];
 			 Wy_log[samples] = IMU.AngularVelocity[1];
 			 Wz_log[samples] = IMU.AngularVelocity[2];
-			 temperature_log[samples] = IMU.Temperature;
 
 			 samples++;
 			 IMU.DataReadyFlag = 0;

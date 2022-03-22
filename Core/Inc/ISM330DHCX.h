@@ -21,7 +21,6 @@ typedef uint8_t DataStatus_t;
 typedef struct{
 	int16_t AngularVelocity[3];
 	int16_t Acceleration[3];
-	int16_t Temperature;
 	float XL_Sensitivity;
 	float G_Sensitivity;
 	DataStatus_t DataReadyFlag;
@@ -265,7 +264,6 @@ void ISM330DHCX_DeInit(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_Reset(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t *Dev);
-void ISM330DHCX_ReadTemperature(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_ReadReg(ISM330DHCX_Handle_t *Dev, uint8_t reg, uint8_t *pdata, uint8_t length);
 void ISM330DHCX_WriteReg(ISM330DHCX_Handle_t *Dev, uint8_t reg, uint8_t *pdata, uint8_t length);
 

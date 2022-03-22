@@ -34,11 +34,11 @@ typedef enum{
  **************************************************/
 
 typedef struct{
-	void (*Init)(); //Performs Low level IO initialization (e.g. GPIO, I2C or SPI)
-	void (*DeInit)(); //De initializes Low Level IO drivers
+	void (*Init)();                                              //Performs Low level IO initialization (e.g. GPIO, I2C or SPI)
+	void (*DeInit)();                                            //De initializes Low Level IO drivers
 	ISM330DHCX_Status_t (*WriteReg)(uint8_t, uint8_t*, uint8_t); //Params: Reg Addr, Data, Length
 	ISM330DHCX_Status_t (*ReadReg)(uint8_t, uint8_t*, uint8_t);  //Params: Reg Addr, Data Buffer, Length
-	uint8_t (*ioctl)(ISM330DHCX_IO_Cmd_t); //Other desired functions (e.g. read INT pin, disable IRQ, etc.)
+	uint8_t (*ioctl)(ISM330DHCX_IO_Cmd_t);                       //Other desired functions (e.g. read INT pin, disable IRQ, etc.)
 }ISM330DHCX_IO_Drv_t;
 
 /**************************************************
