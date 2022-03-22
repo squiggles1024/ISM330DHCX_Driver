@@ -1,0 +1,8 @@
+../Core/Src/ISM330DHCX.c:16:6:ISM330DHCX_Init	40	static
+../Core/Src/ISM330DHCX.c:105:6:ISM330DHCX_ReadAcceleration	24	static
+../Core/Src/ISM330DHCX.c:114:6:ISM330DHCX_ReadAngularVelocity	24	static
+../Core/Src/ISM330DHCX.c:123:6:ISM330DHCX_ReadTemperature	24	static
+../Core/Src/ISM330DHCX.c:132:6:ISM330DHCX_DeInit	16	static
+../Core/Src/ISM330DHCX.c:147:6:ISM330DHCX_Reset	24	static
+../Core/Src/ISM330DHCX.c:156:6:ISM330DHCX_ReadReg	24	static
+../Core/Src/ISM330DHCX.c:164:6:ISM330DHCX_WriteReg	24	static
