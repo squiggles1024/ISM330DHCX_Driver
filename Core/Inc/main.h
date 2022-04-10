@@ -57,10 +57,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define ISM330DHCX_SCL_Pin GPIO_PIN_4
-#define ISM330DHCX_SCL_GPIO_Port GPIOH
-#define ISM330DHCX_SDA_Pin GPIO_PIN_5
-#define ISM330DHCX_SDA_GPIO_Port GPIOH
+#define MEMS_I2C_SCL_Pin GPIO_PIN_4
+#define MEMS_I2C_SCL_GPIO_Port GPIOH
+#define MEMS_I2C_SDA_Pin GPIO_PIN_5
+#define MEMS_I2C_SDA_GPIO_Port GPIOH
 #define DEBUG_UART_RX_Pin GPIO_PIN_10
 #define DEBUG_UART_RX_GPIO_Port GPIOA
 #define DEBUG_UART_TX_Pin GPIO_PIN_9

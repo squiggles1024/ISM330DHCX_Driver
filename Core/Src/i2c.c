@@ -95,7 +95,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* i2cHandle)
     PH4     ------> I2C2_SCL
     PH5     ------> I2C2_SDA
     */
-    GPIO_InitStruct.Pin = ISM330DHCX_SCL_Pin|ISM330DHCX_SDA_Pin;
+    GPIO_InitStruct.Pin = MEMS_I2C_SCL_Pin|MEMS_I2C_SDA_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -125,9 +125,9 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
     PH4     ------> I2C2_SCL
     PH5     ------> I2C2_SDA
     */
-    HAL_GPIO_DeInit(ISM330DHCX_SCL_GPIO_Port, ISM330DHCX_SCL_Pin);
+    HAL_GPIO_DeInit(MEMS_I2C_SCL_GPIO_Port, MEMS_I2C_SCL_Pin);
 
-    HAL_GPIO_DeInit(ISM330DHCX_SDA_GPIO_Port, ISM330DHCX_SDA_Pin);
+    HAL_GPIO_DeInit(MEMS_I2C_SDA_GPIO_Port, MEMS_I2C_SDA_Pin);
 
   /* USER CODE BEGIN I2C2_MspDeInit 1 */
 

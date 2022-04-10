@@ -22,7 +22,7 @@
 #include "icache.h"
 #include "usart.h"
 #include "gpio.h"
-
+#include "math.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
@@ -53,6 +53,8 @@
   static int16_t Wy_log[3000];
   static int16_t Az_log[3000];
   static int16_t Wz_log[3000];
+  static float RollAngle1[3000];
+  static float Pitch1Angle[3000];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,7 +83,7 @@ int main(void)
 		  .XL_Sense = PM4G,
 		  .Int1 = INT1_XDataRdy | INT1_GDataRdy,
 		  .Int2 = INT2_Disable,
-		  .Filter = LPF_Div4
+		  .Filter = LPF_Div800
   };
   /* USER CODE END 1 */
 
@@ -126,8 +128,8 @@ int main(void)
 	  stop_time = HAL_GetTick() + 5000;
 	  /*Log Data for 5 seconds*/
 	  while(HAL_GetTick() < stop_time){
-		 if(IMU.DataReadyFlag == 1 || IMU.ISM330DHCX_IO.ioctl(ReadInt1Pin) == 1){
-			 IMU.ISM330DHCX_IO.ioctl(IRQDisable);
+		 if(IMU.DataReadyFlag == 1 || IMU.ISM330DHCX_IO.ioctl(ISM330DHCX_ReadInt1Pin) == 1){
+			 IMU.ISM330DHCX_IO.ioctl(ISM330DHCX_IRQDisable);
 
 			 ISM330DHCX_ReadAcceleration(&IMU);
 			 ISM330DHCX_ReadAngularVelocity(&IMU);
@@ -141,11 +143,16 @@ int main(void)
 
 			 samples++;
 			 IMU.DataReadyFlag = 0;
-			 IMU.ISM330DHCX_IO.ioctl(IRQEnable);
+			 IMU.ISM330DHCX_IO.ioctl(ISM330DHCX_IRQEnable);
 		 }
 	  }
 
 	  HAL_UART_Transmit(&huart1, (uint8_t*)Ax_log, samples, HAL_MAX_DELAY);
+	  for(uint32_t i = 0; i < samples; i++){
+		  Pitch1Angle[i] = asin((Az_log[i] * .122 * .001)) * 180 / 3.1415;
+		  RollAngle1[i] = atan2(-Ax_log[i], Ay_log[i])* 180 / 3.1415;
+
+	  }
 	  samples = 0;
 	  start_condition = 0;
     /* USER CODE END WHILE */
@@ -222,11 +229,7 @@ static void SystemPower_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-int __io_putchar(int ch){
-	const uint8_t character = ch & 0x00FF;
-	HAL_UART_Transmit(&huart1, &character, 1, HAL_MAX_DELAY);
-	return ch;
-}
+
 
 /* USER CODE END 4 */
 

@@ -7,25 +7,19 @@
 
 #ifndef INC_ISM330DHCX_H_
 #define INC_ISM330DHCX_H_
-/***********************************************************************/
-/* Includes
- ***********************************************************************/
+/**************************************//**************************************//**************************************
+ * Includes
+ **************************************//**************************************//**************************************/
 #include <ISM330DHCX_Hardware.h> //Low level IO dependency
 
-/***********************************************************************/
-/* Typedefs
- ***********************************************************************/
-typedef uint8_t DataStatus_t;
+/**************************************//**************************************//**************************************
+ * Typedefs / Enumerations
+ **************************************//**************************************//**************************************/
+typedef enum{
+	ISM330DHCX_DataReady,
+	ISM330DHCX_DataNotReady
+}ISM330DHCX_DataReadyStatus_t;
 
-/*User must provide the low level driver: ISM330DHCX_IO_Drv_t. See ISM330DHCX_Hardware.h for details */
-typedef struct{
-	int16_t AngularVelocity[3];
-	int16_t Acceleration[3];
-	float XL_Sensitivity;
-	float G_Sensitivity;
-	DataStatus_t DataReadyFlag;
-	ISM330DHCX_IO_Drv_t ISM330DHCX_IO;
-}ISM330DHCX_Handle_t;
 
 /* Accelerometer output data rate */
 typedef enum{
@@ -114,6 +108,9 @@ typedef enum{
 	LPF_Div800
 }ISM330DHCX_AccelFilterMode_t;
 
+/**************************************//**************************************//**************************************
+ * Driver Structs
+ **************************************//**************************************//**************************************/
 /*User must provide one of these structs to the Init function*/
 typedef struct{
 	ISM330DHCX_AccelerometerMode_t AccelMode;
@@ -125,10 +122,20 @@ typedef struct{
 	ISM330DHCX_AccelFilterMode_t Filter;
 }ISM330DHCX_Init_Struct_t;
 
+/*User must provide the low level driver: ISM330DHCX_IO_Drv_t. See ISM330DHCX_Hardware.h for details */
+typedef struct{
+	int16_t AngularVelocity[3];
+	int16_t Acceleration[3];
+	float XL_Sensitivity;
+	float G_Sensitivity;
+	ISM330DHCX_DataReadyStatus_t DataReadyFlag;
+	ISM330DHCX_IO_Drv_t ISM330DHCX_IO;
+}ISM330DHCX_Handle_t;
 
-/***********************************************************************/
-/* Defines                                                             */
-/***********************************************************************/
+
+/**************************************//**************************************//**************************************
+ * Defines
+ **************************************//**************************************//**************************************/
 /* Device ID (See "WHO_AM_I" reg) */
 #define ISM330DHCX_DEVICE_ID (0x6BU)
 
@@ -262,8 +269,8 @@ typedef struct{
 void ISM330DHCX_Init(ISM330DHCX_Init_Struct_t Settings, ISM330DHCX_Handle_t *Dev, ISM330DHCX_IO_Drv_t LowLevelDrivers);
 void ISM330DHCX_DeInit(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_Reset(ISM330DHCX_Handle_t *Dev);
-void ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *Dev);
-void ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t *Dev);
+ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *Dev);
+ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t *Dev);
 void ISM330DHCX_ReadReg(ISM330DHCX_Handle_t *Dev, uint8_t reg, uint8_t *pdata, uint8_t length);
 void ISM330DHCX_WriteReg(ISM330DHCX_Handle_t *Dev, uint8_t reg, uint8_t *pdata, uint8_t length);
 
