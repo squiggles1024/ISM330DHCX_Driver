@@ -104,7 +104,7 @@ typedef enum{
 	LPF_Div45,
 	LPF_Div100,
 	LPF_Div200,
-	LFP_Div400,
+	LPF_Div400,
 	LPF_Div800
 }ISM330DHCX_AccelFilterMode_t;
 
@@ -124,8 +124,12 @@ typedef struct{
 
 /*User must provide the low level driver: ISM330DHCX_IO_Drv_t. See ISM330DHCX_Hardware.h for details */
 typedef struct{
-	int16_t AngularVelocity[3];
-	int16_t Acceleration[3];
+	float Wx;
+	float Wy;
+	float Wz;
+	float Ax;
+	float Ay;
+	float Az;
 	float XL_Sensitivity;
 	float G_Sensitivity;
 	ISM330DHCX_DataReadyStatus_t DataReadyFlag;
@@ -260,8 +264,8 @@ typedef struct{
 #define ISM330DHCX_REG_FIFO_OUT_Z_H (0x7EU)
 
 
-#define XL_READING_TO_MG(x)	((x)*.061 + .061) //See Mechanical Characteristics of data sheet (.061, .122,.244, .488)
-#define G_READING_TO_MDPS(x) ((x)*4.375 + 4.375)
+//#define XL_READING_TO_MG(x)	((x)*.061 + .061) //See Mechanical Characteristics of data sheet (.061, .122,.244, .488)
+//#define G_READING_TO_MDPS(x) ((x)*4.375 + 4.375)
 
 /***********************************************************************/
 /* Public Function Declarations */

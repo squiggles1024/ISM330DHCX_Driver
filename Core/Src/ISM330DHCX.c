@@ -93,8 +93,26 @@ void ISM330DHCX_Init(ISM330DHCX_Init_Struct_t Settings, ISM330DHCX_Handle_t *Dev
 		return;
 	}
 
-	Dev->G_Sensitivity = Settings.G_Sense;
-	Dev->XL_Sensitivity = Settings.XL_Sense;
+	if(Settings.XL_Sense == PM2G){
+		Dev->XL_Sensitivity = 0.061;
+	}else if(Settings.XL_Sense == PM4G) {
+		Dev->XL_Sensitivity = 0.122;
+	}else if(Settings.XL_Sense == PM8G){
+		Dev->XL_Sensitivity = 0.244;
+	}else {
+		Dev->XL_Sensitivity = 0.488;
+	}
+
+	if(Settings.G_Sense == PM250DPS){
+		Dev->G_Sensitivity = 8.75;
+	}else if(Settings.G_Sense == PM500DPS) {
+		Dev->G_Sensitivity = 17.50;
+	}else if(Settings.G_Sense == PM1000DPS){
+		Dev->G_Sensitivity = 35.0;
+	}else {
+		Dev->G_Sensitivity = 70.0;
+	}
+
 	if(Settings.Int1 == 0 && Settings.Int2 == 0){
 		return;
 	}
@@ -114,7 +132,8 @@ void ISM330DHCX_Init(ISM330DHCX_Init_Struct_t Settings, ISM330DHCX_Handle_t *Dev
  * Params: ISM330DHCX Device Handle
  ********************************************************************************************************/
 ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *Dev){
-	int16_t *pData = Dev->Acceleration;
+	int16_t buffer[3];
+
 	uint8_t status = 0;
 	if(Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_STATUS_REG,&status,1) != ISM330DHCX_OK){
 		_log(log_ism330dhcx, "Read Status reg failed");
@@ -124,9 +143,12 @@ ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *De
 		return ISM330DHCX_DataNotReady;
 	}
 	Dev->DataReadyFlag = ISM330DHCX_DataReady;
-	if (Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUTX_L_A, (uint8_t*)pData, 6) != ISM330DHCX_OK){
+	if (Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUTX_L_A, (uint8_t*)buffer, 6) != ISM330DHCX_OK){
 		_log(log_ism330dhcx, "Read Acceleration failed");
 	}
+	Dev->Ax = Dev->XL_Sensitivity * buffer[0] / 1000.0; //Div by 1000-> Convert to Gs
+	Dev->Ay = Dev->XL_Sensitivity * buffer[1] / 1000.0;
+	Dev->Az = Dev->XL_Sensitivity * buffer[2] / 1000.0;
 	Dev->DataReadyFlag = ISM330DHCX_DataNotReady;
 	return ISM330DHCX_DataReady;
 }
@@ -136,7 +158,7 @@ ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAcceleration(ISM330DHCX_Handle_t *De
  * Params: ISM330DHCX Device Handle
  ********************************************************************************************************/
 ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t *Dev){
-	int16_t *pData = Dev->AngularVelocity;
+	int16_t buffer[3];
 	uint8_t status = 0;
 	if(Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_STATUS_REG,&status,1) != ISM330DHCX_OK){
 		_log(log_ism330dhcx, "Read Status reg failed");
@@ -146,9 +168,12 @@ ISM330DHCX_DataReadyStatus_t ISM330DHCX_ReadAngularVelocity(ISM330DHCX_Handle_t 
 		return ISM330DHCX_DataNotReady;
 	}
 	Dev->DataReadyFlag = ISM330DHCX_DataReady;
-	if (Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUTX_L_G, (uint8_t*)pData, 6) != ISM330DHCX_OK){
+	if (Dev->ISM330DHCX_IO.ReadReg(ISM330DHCX_REG_OUTX_L_G, (uint8_t*)buffer, 6) != ISM330DHCX_OK){
 		_log(log_ism330dhcx, "Read Acceleration failed");
 	}
+	Dev->Wx = Dev->G_Sensitivity * buffer[0] / 1000.0; //Div by 1000-> Convert to DPS
+	Dev->Wy = Dev->G_Sensitivity * buffer[1] / 1000.0;
+	Dev->Wz = Dev->G_Sensitivity * buffer[2] / 1000.0;
 	Dev->DataReadyFlag = ISM330DHCX_DataNotReady;
 	return ISM330DHCX_DataReady;
 }
